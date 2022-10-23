@@ -1,0 +1,6 @@
+module Pods_thePushApp {
+  umbrella header "Pods-thePushApp-umbrella.h"
+
+  export *
+  module * { export * }
+}

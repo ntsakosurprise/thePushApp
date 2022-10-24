@@ -17,8 +17,10 @@ import {Button, SocialIcon} from 'react-native-elements';
 
 const appId = '1047121222092614';
 
-export default function LoginScreen() {
+export default function LoginScreen({navigation, route}) {
   const onLoginPress = () => {};
+  const {itemId, otherParam} = route.params;
+  console.log('THE ROUTE PARAMS;;;', itemId, otherParam);
 
   // const onFbLoginPress = async () => {
   //   try {
@@ -42,7 +44,7 @@ export default function LoginScreen() {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.loginScreenContainer}>
           <View style={styles.loginFormView}>
-            <Text style={styles.logoText}>Instamobile</Text>
+            <Text style={styles.logoText}>thePushApp</Text>
             <TextInput
               placeholder="Username"
               placeholderColor="#c4c3cb"
@@ -62,8 +64,13 @@ export default function LoginScreen() {
             <Button
               containerStyle={styles.fbLoginButton}
               type="clear"
-              onPress={() => console.log('loging in')}
-              title="Login With Facebook"
+              onPress={() =>
+                navigation.navigate('Home', {
+                  itemId: 86,
+                  otherParam: 'anything you want here',
+                })
+              }
+              title="Go Home"
             />
           </View>
         </View>

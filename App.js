@@ -17,6 +17,7 @@ import {
   View,
 } from 'react-native';
 import LoginScreen from './src/screens/login/login';
+import AppNavigation from './src/navigation/appnavigation';
 
 import {
   Colors,
@@ -36,17 +37,19 @@ const App = () => {
   console.log('the app is running;;');
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View>
-          <LoginScreen />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <AppNavigation>
+      <SafeAreaView style={backgroundStyle}>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          style={backgroundStyle}>
+          <Header />
+          {/* <View>
+            <LoginScreen />
+          </View> */}
+        </ScrollView>
+      </SafeAreaView>
+    </AppNavigation>
   );
 };
 

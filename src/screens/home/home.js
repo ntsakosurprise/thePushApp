@@ -4,8 +4,13 @@ import {Button} from 'react-native-elements';
 import {TaskInput} from './taskinput';
 import {TaskItem} from './taskitem';
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({navigation, route}) {
+  console.log('NAVIGATION', navigation);
+  console.log('ROUTE', route);
   const [tasks, setTasks] = useState([]);
+  const {itemId, otherParam} = route.params;
+  console.log('THE ROUTE PARAMS;;;', itemId);
+  console.log('THE OTHER PARAM;;;', otherParam);
 
   const addTask = task => {
     if (task == null) return;

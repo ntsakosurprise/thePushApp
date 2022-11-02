@@ -17,10 +17,10 @@ import {Button, SocialIcon} from 'react-native-elements';
 
 const appId = '1047121222092614';
 
-export default function LoginScreen({navigation, route}) {
+export default function LoginScreen({navigation, route = null}) {
   const onLoginPress = () => {};
-  const {itemId, otherParam} = route.params;
-  console.log('THE ROUTE PARAMS;;;', itemId, otherParam);
+  // const {itemId = 5, otherParam = ''} = route ? route.params : {};
+  // console.log('THE ROUTE PARAMS;;;', itemId, otherParam);
 
   // const onFbLoginPress = async () => {
   //   try {

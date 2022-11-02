@@ -7,25 +7,18 @@
  */
 
 import React from 'react';
+import {useEffect} from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   useColorScheme,
-  View,
 } from 'react-native';
-import LoginScreen from './src/screens/login/login';
 import AppNavigation from './src/navigation/appnavigation';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
+import {configurePushNotifications} from './pushNotifications/configurePush';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -34,7 +27,10 @@ const App = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  console.log('the app is running;;');
+  useEffect(() => {
+    console.log('registering for push');
+    configurePushNotifications();
+  }, []);
 
   return (
     <AppNavigation>
@@ -44,9 +40,6 @@ const App = () => {
           contentInsetAdjustmentBehavior="automatic"
           style={backgroundStyle}>
           <Header />
-          {/* <View>
-            <LoginScreen />
-          </View> */}
         </ScrollView>
       </SafeAreaView>
     </AppNavigation>

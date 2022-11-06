@@ -102,8 +102,9 @@ import messaging from '@react-native-firebase/messaging';
 
 export const configurePushNotifications = () => {
   console.log('CONFIGURE GOT A CALL');
-  //if(!checkIfNotificationsEnabled()) requestUNotifPermission()
-  requestUNotifPermission()
+  if(!checkIfNotificationsEnabled()) requestUNotifPermission()
+
+  
   getDeviceToken()
   registerForFCMNotifications()
   listenToEvents()

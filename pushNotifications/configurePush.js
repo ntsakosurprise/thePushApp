@@ -98,10 +98,12 @@
 
 
 import notifee from '@notifee/react-native';
+import messaging from '@react-native-firebase/messaging';
 
 export const configurePushNotifications = () => {
   console.log('CONFIGURE GOT A CALL');
-  if(!checkIfNotificationsEnabled()) requestUNotifPermission()
+  //if(!checkIfNotificationsEnabled()) requestUNotifPermission()
+  registerForFCMNotifications()
   listenToEvents()
   // try {
   //   PushNotification.configure({
@@ -267,4 +269,23 @@ handleNotificationDisplay = async ()=>{
  
 
 }
+
+// Note that an async function or a function that returns a Promise 
+// is required for both subscribers.
+const onMessageReceived = (message)=> {
+   console.log('WE HAVE RECEIVED FCM MESSAGE',message)
+}
+
+
+const registerForFCMNotifications = ()=>{
+
+  messaging().onMessage(onMessageReceived);
+  messaging().setBackgroundMessageHandler(onMessageReceived);
+
+}
+
+
+
+
+
 

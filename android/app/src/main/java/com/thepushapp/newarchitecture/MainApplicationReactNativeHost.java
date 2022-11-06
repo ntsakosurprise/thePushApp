@@ -1,4 +1,4 @@
-package com.thepushapp.newarchitecture;
+package com.test.thepushapp.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.thepushapp.BuildConfig;
-import com.thepushapp.newarchitecture.components.MainComponentsRegistry;
-import com.thepushapp.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.test.thepushapp.BuildConfig;
+import com.test.thepushapp.newarchitecture.components.MainComponentsRegistry;
+import com.test.thepushapp.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

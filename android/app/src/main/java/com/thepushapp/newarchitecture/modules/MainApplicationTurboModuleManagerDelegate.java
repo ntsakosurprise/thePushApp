@@ -1,4 +1,4 @@
-package com.thepushapp.newarchitecture.modules;
+package com.test.thepushapp.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

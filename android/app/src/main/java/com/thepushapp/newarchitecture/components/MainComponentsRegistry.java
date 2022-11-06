@@ -1,4 +1,4 @@
-package com.thepushapp.newarchitecture.components;
+package com.test.thepushapp.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

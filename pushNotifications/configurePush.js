@@ -103,6 +103,7 @@ import messaging from '@react-native-firebase/messaging';
 export const configurePushNotifications = () => {
   console.log('CONFIGURE GOT A CALL');
   //if(!checkIfNotificationsEnabled()) requestUNotifPermission()
+  getDeviceToken()
   registerForFCMNotifications()
   listenToEvents()
   // try {
@@ -272,7 +273,7 @@ handleNotificationDisplay = async ()=>{
 
 // Note that an async function or a function that returns a Promise 
 // is required for both subscribers.
-const onMessageReceived = (message)=> {
+const onMessageReceived = async (message)=> {
    console.log('WE HAVE RECEIVED FCM MESSAGE',message)
 }
 
@@ -282,6 +283,21 @@ const registerForFCMNotifications = ()=>{
   messaging().onMessage(onMessageReceived);
   messaging().setBackgroundMessageHandler(onMessageReceived);
 
+}
+
+
+const getDeviceToken = async ()=>{
+
+
+  // Register the device with FCM
+  await messaging().registerDeviceForRemoteMessages();
+
+  // Get the token
+  const token = await messaging().getToken();
+
+  // Save the token
+  console.log('--- device token ---',token)
+  registerDeviceInfo({token: token, os: 'android'})
 }
 
 

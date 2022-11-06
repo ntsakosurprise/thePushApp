@@ -192,7 +192,7 @@ registerDeviceInfo = (deviceInfo, token) => {
 checkIfNotificationsEnabled = async ()=>{
 
     const settings = await notifee.getNotificationSettings();
-  
+    console.log('THE SETTINGS;;;',settings)
     if (settings.authorizationStatus == AuthorizationStatus.AUTHORIZED) {
       console.log("--- permisions granted ---")
       return true

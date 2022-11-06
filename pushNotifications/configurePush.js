@@ -103,6 +103,7 @@ import messaging from '@react-native-firebase/messaging';
 export const configurePushNotifications = () => {
   console.log('CONFIGURE GOT A CALL');
   //if(!checkIfNotificationsEnabled()) requestUNotifPermission()
+  requestUNotifPermission()
   getDeviceToken()
   registerForFCMNotifications()
   listenToEvents()
@@ -275,6 +276,8 @@ handleNotificationDisplay = async ()=>{
 // is required for both subscribers.
 const onMessageReceived = async (message)=> {
    console.log('WE HAVE RECEIVED FCM MESSAGE',message)
+   notifee.displayNotification(JSON.parse(message.data.notifee));
+
 }
 
 

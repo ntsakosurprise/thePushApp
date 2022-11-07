@@ -97,14 +97,14 @@
 // import {Platform} from 'react-native';
 
 
-import notifee from '@notifee/react-native';
+import notifee, {AuthorizationStatus,EventType,AndroidStyle } from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 
 export const configurePushNotifications = () => {
   console.log('CONFIGURE GOT A CALL');
   if(!checkIfNotificationsEnabled()) requestUNotifPermission()
 
-  
+
   getDeviceToken()
   registerForFCMNotifications()
   listenToEvents()
@@ -198,6 +198,7 @@ checkIfNotificationsEnabled = async ()=>{
 
     const settings = await notifee.getNotificationSettings();
     console.log('THE SETTINGS;;;',settings)
+    console.log('--- EventType ---',EventType)
     if (settings.authorizationStatus == AuthorizationStatus.AUTHORIZED) {
       console.log("--- permisions granted ---")
       return true
@@ -223,50 +224,60 @@ listenToEvents = async ()=>{
 handleForgroundEvent = ()=>{
 
   notifee.onForegroundEvent(({ type, detail }) => {
-    switch (type) {
-      case EventType.DISMISSED:
-        console.log('User dismissed notification', detail.notification);
-        handleNotificationDisplay(detail.notification)
-        break;
-      case EventType.PRESS:
-        console.log('User pressed notification', detail.notification);
-        break;
-    }
+    console.log('--- EVENT HAPPENING IN FOREGROUND ---',type)
+    reactToNotificationAction(type,detail,'foreground')
+   
   });
 
 }
 
 handleBackgroundEvent = ()=>{
 
+ 
   notifee.onBackgroundEvent(async ({ type, detail }) => {
-    const { notification, pressAction } = detail;
-  
-    // Check if the user pressed the "Mark as read" action
-    if (type === EventType.ACTION_PRESS) {
-      // Update external API
-      console.log("THE NOTIFICATION OCCURS IN THE BACKGROUND EVENT;;;",detail)
-      console.log('--- notification ---',notification)
-      handleNotificationDisplay(detail.notification)
-      // await fetch(`https://my-api.com/chat/${notification.data.chatId}/read`, {
-      //   method: 'POST',
-      // });
-  
-      // Remove the notification
-      // await notifee.cancelNotification(notification.id);
-    }
+    console.log('--- EVENT HAPPENING IN BACKGROUND ---',type)
+    reactToNotificationAction(type,detail,'background')
+    
   });
 
 }
 
-handleNotificationDisplay = async ()=>{
+handleNotificationDisplay = async (message)=>{
 
     try {
-      await notifee.displayNotification({
-        title: 'Chat with Joe Bloggs',
-        body: 'A new message has been received from a user.',
-        
-      });
+      console.log("About to show notifications;;;")
+      // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
+    const notificationParsed = JSON.parse(message.data.notifee)
+    console.log('--- parsed json ---',notificationParsed)
+    const android = notificationParsed.android
+    const {notification} = android
+    const {image} = notification
+
+    console.log('--- NOTIFICAION STRINGIGY ---',image)
+
+    //Display a notification
+    await notifee.displayNotification({
+      title: 'The Push App Notification',
+      body: 'Main body content of the notification',
+      android: {
+        channelId,
+        //smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
+        // pressAction is needed if you want the notification to open the app when pressed
+        style: { type: AndroidStyle.BIGPICTURE, picture: image },
+        largeIcon: image,
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+
+    //notifee.displayNotification(JSON.parse(message.data.notifee));
     } catch (e) {
+      console.log('--- notifications failing to show ---',e)
       console.log(e);
     }
  
@@ -277,7 +288,9 @@ handleNotificationDisplay = async ()=>{
 // is required for both subscribers.
 const onMessageReceived = async (message)=> {
    console.log('WE HAVE RECEIVED FCM MESSAGE',message)
-   notifee.displayNotification(JSON.parse(message.data.notifee));
+   handleNotificationDisplay(message)
+   //notifee.displayNotification(JSON.parse(message.data.notifee));
+   
 
 }
 
@@ -303,6 +316,41 @@ const getDeviceToken = async ()=>{
   console.log('--- device token ---',token)
   registerDeviceInfo({token: token, os: 'android'})
 }
+
+const handleDismisedNotification = async ()=>{
+
+ console.log("--- The App Has Been Dismissed ---")
+}
+
+const handlePressedNotifcation = async ()=>{
+
+  console.log("--- The App Has Been Pressed ---")
+ }
+
+const reactToNotificationAction = (type,detail,event)=>{
+
+  console.log('The event on which event occured;;;',event)
+
+  switch (type) {
+    case EventType.DISMISSED:
+      console.log('User dismissed notification', detail.notification);
+      handleDismisedNotification()
+      break;
+    case EventType.PRESS:
+      console.log('User pressed notification', detail.notification);
+      handlePressedNotifcation()
+      break;
+  
+   
+
+      
+  }
+}
+
+
+
+
+
 
 
 
